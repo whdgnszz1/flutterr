@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class DateViewScreen extends StatefulWidget {
+  const DateViewScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DateViewScreen> createState() => _DateViewScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DateViewScreenState extends State<DateViewScreen> {
   DateTime selectedDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               onDateTimeChanged: (DateTime date) {
                 setState(
-                  () {
+                      () {
                     selectedDate = date;
                   },
                 );
@@ -111,10 +111,10 @@ class _TopPart extends StatelessWidget {
           ),
           Text(
             "D + ${DateTime(
-                  now.year,
-                  now.month,
-                  now.day,
-                ).difference(selectedDate).inDays + 1}",
+              now.year,
+              now.month,
+              now.day,
+            ).difference(selectedDate).inDays + 1}",
             style: textTheme.headline2,
           )
         ],
