@@ -1,43 +1,58 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/services.dart';
 
-final homeUrl = Uri.parse('https://blog.codefactory.ai');
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
-class HomeScreen extends StatelessWidget {
-  WebViewController controller = WebViewController()
-  ..setJavaScriptMode(JavaScriptMode.unrestricted)
-  ..loadRequest(homeUrl);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-  HomeScreen({Key? key}) : super(key: key);
+class _HomeScreenState extends State<HomeScreen> {
+  Timer? timer;
+  PageController controller = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+
+    timer = Timer.periodic(Duration(seconds: 4), (timer) {
+      int currentPage = controller.page!.toInt();
+      int nextPage = currentPage + 1;
+
+      if (nextPage > 4) {
+        nextPage = 0;
+      }
+      controller.animateToPage(nextPage,
+          duration: Duration(milliseconds: 400), curve: Curves.linear);
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    if (timer != null) {
+      timer!.cancel();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: Text("Jong Hun"),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              controller.loadRequest(homeUrl);
-            },
-            icon: Icon(
-              Icons.home,
-            ),
-          ),
-        ],
-      ),
-      body: WebViewWidget(
+      body: PageView(
         controller: controller,
+        children: [1, 2, 3, 4, 5]
+            .map(
+              (e) => Image.asset(
+                'asset/img/image_$e.jpeg',
+                fit: BoxFit.cover,
+              ),
+            )
+            .toList(),
       ),
-      // WebView(
-      //   onWebViewCreated: (WebViewController controller) {
-      //     this.controller = controller;
-      //   },
-      //   initialUrl: homeUrl,
-      //   javascriptMode: JavascriptMode.unrestricted,
-      // ),
     );
   }
 }
