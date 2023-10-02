@@ -1,29 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:navigation/layout/main_layout.dart';
+import 'package:navigation/screen/home_screen.dart';
+import 'package:navigation/screen/route_two_screen.dart';
 
 class RouteOneScreen extends StatelessWidget {
-  const RouteOneScreen({Key? key}) : super(key: key);
+  final int number;
+
+  const RouteOneScreen({
+    required this.number,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Route One'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('pop'),
-            ),
-          ],
+    return MainLayout(
+      title: 'Screen One',
+      children: [
+        Text(
+          number.toString(),
+          textAlign: TextAlign.center,
         ),
-      ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(456);
+          },
+          child: Text('Pop'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => RouteTwoScreen(),
+                settings: RouteSettings(arguments: 456),
+              ),
+            );
+          },
+          child: Text("Push"),
+        )
+      ],
     );
   }
 }
